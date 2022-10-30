@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
-     private lateinit var rvBoard: LinearLayout
+     private lateinit var rvBoard: RecyclerView
      private lateinit var tvNumMoves: TextView
      private lateinit var tvNumPairs: TextView
 
