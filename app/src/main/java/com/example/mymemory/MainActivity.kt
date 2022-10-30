@@ -2,17 +2,19 @@ package com.example.mymemory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.MemoryFile
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymemory.models.BoardSize
+import com.example.mymemory.utils.DEFAULT_ICONS
 
 class MainActivity : AppCompatActivity() {
 
      private lateinit var rvBoard: RecyclerView
      private lateinit var tvNumMoves: TextView
      private lateinit var tvNumPairs: TextView
+
+     private var boardSize: BoardSize = BoardSize.MEDIUM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +23,11 @@ class MainActivity : AppCompatActivity() {
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
 
-        rvBoard.adapter = MemoryBoardManager(this, 8)
+        var chooseImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
+        var randomizedImages = (chooseImages + chooseImages).shuffled()
+
+        rvBoard.adapter = MemoryBoardManager(this, boardSize, randomizedImages)
         rvBoard.setHasFixedSize(true)
-        rvBoard.layoutManager = GridLayoutManager(this, 2)
+        rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
 }
