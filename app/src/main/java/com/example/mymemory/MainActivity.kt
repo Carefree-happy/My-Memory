@@ -1,13 +1,14 @@
 package com.example.mymemory
 
+import android.app.SearchManager.OnCancelListener
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymemory.models.BoardSize
 import com.example.mymemory.models.MemoryGame
-import com.example.mymemory.utils.DEFAULT_ICONS
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,12 +29,17 @@ class MainActivity : AppCompatActivity() {
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
 
-        var chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
-        val randomizedImages = (chosenImages + chosenImages).shuffled()
+//        var chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
+//        val randomizedImages = (chosenImages + chosenImages).shuffled()
+//        var memoryCards = randomizedImages.map{MemoryCard(it)}
 
-        val memoryGame = MemoryGame(boardSize)
+        var memoryGame = MemoryGame(boardSize)
 
-        rvBoard.adapter = MemoryBoardManager(this, boardSize, randomizedImages)
+        rvBoard.adapter = MemoryBoardManager(this, boardSize, memoryGame.cards, object: MemoryBoardManager.CardClickListener{
+            override fun onCardClick(position: Int) {
+                Log.i(TAG, "Card clicked $position")
+            }
+        })
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
